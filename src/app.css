@@ -3,19 +3,16 @@
 @tailwind utilities;
 
 /* =====================================================================
-   KONRAD — Design System (tema oscuro premium + vidrio físico)
-   Roles: Director / UX / UI / Glass / Motion / Frontend / A11y
+   COREWERK — Design System (B2B industrial · tema claro + marca oscura)
    ===================================================================== */
 
 @layer base {
 	:root {
-		/* Motion tokens (Motion Specialist) */
 		--ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
 		--ease-spring-soft: cubic-bezier(0.34, 1.56, 0.64, 1);
 		--ease-exit: cubic-bezier(0.4, 0, 1, 1);
 		--dur-click: 90ms;
 		--dur-hover: 120ms;
-		--dur-modal: 250ms;
 		--dur-panel: 300ms;
 	}
 
@@ -24,38 +21,12 @@
 	}
 
 	body {
-		@apply bg-surface text-ink;
-		position: relative;
+		@apply bg-surface text-ink antialiased;
 		min-height: 100vh;
 		overflow-x: hidden;
 	}
 
-	/* --- Escena de fondo: profundidad para que el vidrio tenga qué refractar ---
-	   Capa fija con orbes de luz (ámbar + índigo) sobre el abismo navy + grano sutil. */
-	body::before {
-		content: '';
-		position: fixed;
-		inset: 0;
-		z-index: -2;
-		background:
-			radial-gradient(60rem 60rem at 85% -10%, rgba(245, 158, 11, 0.16), transparent 60%),
-			radial-gradient(50rem 50rem at 10% 10%, rgba(56, 89, 235, 0.18), transparent 55%),
-			radial-gradient(70rem 70rem at 50% 120%, rgba(99, 102, 241, 0.12), transparent 60%),
-			#070b16;
-	}
-
-	/* Grano/ruido muy sutil para textura física (no banding en los gradientes) */
-	body::after {
-		content: '';
-		position: fixed;
-		inset: 0;
-		z-index: -1;
-		pointer-events: none;
-		opacity: 0.035;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-	}
-
-	/* Foco visible accesible (A11y / WCAG 2.2) */
+	/* Foco visible accesible (WCAG 2.2) */
 	a:focus-visible,
 	button:focus-visible,
 	input:focus-visible,
@@ -64,84 +35,40 @@
 	[tabindex]:focus-visible {
 		outline: none;
 		box-shadow:
-			0 0 0 2px #070b16,
+			0 0 0 2px #fff,
 			0 0 0 4px #f59e0b;
 		border-radius: 0.5rem;
 	}
 
 	::selection {
-		background: rgba(245, 158, 11, 0.3);
-		color: #fff;
+		background: rgba(245, 158, 11, 0.25);
+		color: #0a1628;
 	}
 }
 
 @layer components {
-	/* =================================================================
-	   VIDRIO FÍSICO (Glass Specialist)
-	   - backdrop-filter: blur + saturate (refracción/contexto del fondo)
-	   - fill translúcido (absorción lumínica)
-	   - rim Fresnel: borde con gradiente más brillante arriba (::after + mask)
-	   - sombras: elevación externa + highlight interno superior + sombra inferior
-	   ================================================================= */
-	.glass {
-		position: relative;
-		background: rgba(255, 255, 255, 0.06);
-		-webkit-backdrop-filter: blur(24px) saturate(140%);
-		backdrop-filter: blur(24px) saturate(140%);
-		border: 1px solid transparent;
-		background-clip: padding-box;
-		box-shadow:
-			0 8px 32px rgba(0, 0, 0, 0.35),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2),
-			inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+	/* Contenedor estándar de sección */
+	.container-w {
+		@apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
 	}
 
-	/* Rim Fresnel: anillo de 1px con gradiente vertical (brillante arriba, tenue abajo) */
-	.glass::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		border-radius: inherit;
-		padding: 1px;
-		background: linear-gradient(
-			180deg,
-			rgba(255, 255, 255, 0.5),
-			rgba(255, 255, 255, 0.06) 38%,
-			rgba(255, 255, 255, 0.14)
-		);
-		-webkit-mask:
-			linear-gradient(#000 0 0) content-box,
-			linear-gradient(#000 0 0);
-		-webkit-mask-composite: xor;
-		mask-composite: exclude;
-		pointer-events: none;
-	}
-
-	/* Vidrio más denso para navbar/menús/modales (mayor legibilidad sobre contenido) */
-	.glass-strong {
-		background: rgba(11, 17, 32, 0.55);
-		-webkit-backdrop-filter: blur(24px) saturate(160%);
-		backdrop-filter: blur(24px) saturate(160%);
-	}
-
-	/* Tarjeta de vidrio interactiva: reacciona al hover con elevación y rim más vivo */
-	.glass-card {
+	/* Tarjeta industrial: borde fino, sombra suave, hover con micro-elevación */
+	.card {
+		@apply rounded-2xl border border-line bg-white shadow-card;
 		transition:
 			transform var(--dur-hover) var(--ease-spring),
 			box-shadow var(--dur-hover) var(--ease-spring),
-			background-color var(--dur-hover) var(--ease-spring);
-		will-change: transform;
+			border-color var(--dur-hover) var(--ease-spring);
 	}
-	.glass-card:hover {
+	.card-hover:hover {
 		transform: translateY(-4px);
-		background: rgba(255, 255, 255, 0.09);
 		box-shadow:
-			0 20px 60px rgba(0, 0, 0, 0.45),
-			inset 0 1px 0 rgba(255, 255, 255, 0.28),
-			inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+			0 8px 24px rgba(15, 23, 42, 0.08),
+			0 20px 48px rgba(15, 23, 42, 0.1);
+		border-color: rgba(14, 165, 233, 0.45);
 	}
 
-	/* Botón primario (CTA ámbar) con micro-interacción de click */
+	/* CTA primario ámbar */
 	.btn-accent {
 		@apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-primary;
 		transition:
@@ -157,49 +84,53 @@
 		transform: scale(0.97);
 	}
 
-	/* Botón de vidrio (secundario) */
-	.btn-glass {
-		@apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-semibold text-ink;
-		background: rgba(255, 255, 255, 0.06);
-		border: 1px solid rgba(255, 255, 255, 0.16);
-		-webkit-backdrop-filter: blur(12px);
-		backdrop-filter: blur(12px);
+	/* Botón outline (secundario, sobre claro) */
+	.btn-outline {
+		@apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-6 py-3 font-semibold text-ink;
 		transition:
 			transform var(--dur-click) var(--ease-spring),
 			background-color var(--dur-hover) var(--ease-spring),
 			border-color var(--dur-hover) var(--ease-spring);
 	}
-	.btn-glass:hover {
-		background: rgba(255, 255, 255, 0.12);
-		border-color: rgba(255, 255, 255, 0.28);
+	.btn-outline:hover {
+		border-color: #cbd5e1;
+		background: #f8fafc;
 	}
-	.btn-glass:active {
+	.btn-outline:active {
 		transform: scale(0.97);
 	}
 
-	/* Eyebrow de sección (etiqueta superior) */
+	/* Botón outline claro sobre fondo oscuro (hero) */
+	.btn-ghost-light {
+		@apply inline-flex items-center justify-center gap-2 rounded-xl border px-6 py-3 font-semibold text-white;
+		border-color: rgba(255, 255, 255, 0.25);
+		background: rgba(255, 255, 255, 0.04);
+		transition:
+			transform var(--dur-click) var(--ease-spring),
+			background-color var(--dur-hover) var(--ease-spring),
+			border-color var(--dur-hover) var(--ease-spring);
+	}
+	.btn-ghost-light:hover {
+		background: rgba(255, 255, 255, 0.1);
+		border-color: rgba(255, 255, 255, 0.45);
+	}
+	.btn-ghost-light:active {
+		transform: scale(0.97);
+	}
+
+	/* Eyebrow de sección */
 	.eyebrow {
 		@apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent;
 	}
-}
 
-/* --- Lenis smooth scroll (desactiva el scroll-behavior nativo cuando está activo) --- */
-html.lenis,
-html.lenis body {
-	height: auto;
-}
-.lenis.lenis-smooth {
-	scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-	overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-	overflow: hidden;
+	/* Chip de etiqueta */
+	.chip {
+		@apply inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1 text-xs font-medium text-muted;
+	}
 }
 
 @layer utilities {
-	/* Scroll horizontal sin barra (pills del hero) */
+	/* Scroll horizontal sin barra (pills) */
 	.no-scrollbar {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
@@ -208,21 +139,13 @@ html.lenis body {
 		display: none;
 	}
 
-	/* Patrón de puntos sutil para fondos */
+	/* Patrón de puntos sutil (para fondos oscuros del hero) */
 	.dot-pattern {
-		background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+		background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
 		background-size: 22px 22px;
 	}
 
-	/* Texto con degradado (titulares premium) */
-	.text-gradient {
-		background: linear-gradient(180deg, #ffffff, #cbd5e1);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
-	}
-
-	/* Fade-in al entrar al viewport (IntersectionObserver -> .is-visible) */
+	/* Fade-in al entrar al viewport */
 	.reveal {
 		opacity: 0;
 		transform: translateY(24px);
@@ -235,7 +158,6 @@ html.lenis body {
 		transform: translateY(0);
 	}
 
-	/* Respeta usuarios con prefers-reduced-motion (Motion + A11y) */
 	@media (prefers-reduced-motion: reduce) {
 		*,
 		*::before,
@@ -249,66 +171,43 @@ html.lenis body {
 			opacity: 1;
 			transform: none;
 		}
-		.glass-card:hover {
-			transform: none;
-		}
 	}
 }
 
 /* =====================================================================
-   CURSOR FX — Cursor circular ámbar custom (desktop, pointer:fine)
+   WHATSAPP — botón flotante con anillo pulsante
    ===================================================================== */
-
-/* Ocultar cursor nativo sólo cuando CursorFX está activo */
-body.cursor-fx-active,
-body.cursor-fx-active * {
-	cursor: none !important;
-}
-
-.cursor-fx {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background: #f59e0b;
-	pointer-events: none;
-	z-index: 9999;
-	will-change: transform;
-	transition:
-		width 0.2s var(--ease-spring),
-		height 0.2s var(--ease-spring),
-		opacity 0.2s ease,
-		filter 0.2s ease;
-	mix-blend-mode: screen;
-}
-
-.cursor-fx.cursor-fx-expanded {
-	width: 40px;
-	height: 40px;
-	opacity: 0.55;
-	filter: blur(3px);
-}
-
-/* En pantallas táctiles / pointer:coarse: ocultar el cursor FX */
-@media (pointer: coarse) {
-	.cursor-fx {
-		display: none !important;
+@keyframes wa-pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
 	}
-	body.cursor-fx-active,
-	body.cursor-fx-active * {
-		cursor: auto !important;
+	70% {
+		box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
 	}
 }
-
-/* Respetar prefers-reduced-motion: ocultar cursor FX si reduce */
+.wa-pulse {
+	animation: wa-pulse 2.2s var(--ease-spring) infinite;
+}
 @media (prefers-reduced-motion: reduce) {
-	.cursor-fx {
-		display: none !important;
+	.wa-pulse {
+		animation: none;
 	}
-	body.cursor-fx-active,
-	body.cursor-fx-active * {
-		cursor: auto !important;
-	}
+}
+
+/* --- Lenis smooth scroll --- */
+html.lenis,
+html.lenis body {
+	height: auto;
+}
+.lenis.lenis-smooth {
+	scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+	overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+	overflow: hidden;
 }

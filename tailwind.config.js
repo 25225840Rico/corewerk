@@ -4,26 +4,28 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				// --- Base oscura (tema premium) ---
-				primary: '#0F172A', // navy (acentos / superficies sólidas)
-				abyss: '#080B14', // fondo más profundo de la escena (hero)
-				accent: '#F59E0B', // ámbar (CTAs, foco) — acento ÚNICO (Von Restorff)
+				// --- Paleta CoreWerk (B2B industrial) ---
+				primary: '#0A1628', // azul noche industrial (fondos de marca, hero, footer)
+				'primary-700': '#0F1F38', // navy un punto más claro (cards sobre primary)
+				accent: '#F59E0B', // ámbar (CTAs, foco)
 				'accent-soft': '#FBBF24',
-				cyber: '#00FFE0', // cian eléctrico — SOLO detalles técnicos, máx 3 usos/página
-				surface: '#0B1120', // fondo base de página (antes era claro)
-				// Texto sobre oscuro
-				ink: '#F1F5F9', // texto principal (slate-100)
-				muted: '#94A3B8', // texto secundario (slate-400)
-				faint: '#64748B' // texto terciario (slate-500)
+				accent2: '#0EA5E9', // celeste eléctrico (highlights tecnológicos)
+				surface: '#F8FAFC', // fondo base claro
+				'surface-200': '#EEF2F7', // superficie alterna
+				ink: '#1E293B', // texto principal sobre claro
+				muted: '#64748B', // texto secundario
+				faint: '#94A3B8', // texto terciario
+				line: '#E2E8F0', // bordes
+				danger: '#EF4444', // urgencia / alertas
+				success: '#10B981' // confirmaciones
 			},
 			fontFamily: {
 				sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
 			},
-			// Sistema de espaciado en múltiplos de 8px (grid 8pt)
 			spacing: {
-				18: '4.5rem', // 72
-				22: '5.5rem', // 88
-				30: '7.5rem' // 120
+				18: '4.5rem',
+				22: '5.5rem',
+				30: '7.5rem'
 			},
 			borderRadius: {
 				xl: '0.875rem',
@@ -31,25 +33,18 @@ export default {
 				'3xl': '1.75rem'
 			},
 			transitionTimingFunction: {
-				// Easing natural / spring para motion (iOS / VisionOS / Linear)
 				spring: 'cubic-bezier(0.22, 1, 0.36, 1)',
 				'spring-soft': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
 				exit: 'cubic-bezier(0.4, 0, 1, 1)'
 			},
 			transitionDuration: {
-				90: '90ms', // click
-				120: '120ms' // hover
+				90: '90ms',
+				120: '120ms'
 			},
 			boxShadow: {
-				// Sombra de vidrio: elevación + highlight interno superior (Fresnel)
-				glass:
-					'0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.20), inset 0 -1px 0 rgba(0,0,0,0.25)',
-				'glass-lg':
-					'0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(0,0,0,0.30)',
+				card: '0 1px 2px rgba(15,23,42,0.04), 0 4px 16px rgba(15,23,42,0.06)',
+				'card-lg': '0 8px 24px rgba(15,23,42,0.08), 0 20px 48px rgba(15,23,42,0.10)',
 				glow: '0 0 0 1px rgba(245,158,11,0.35), 0 8px 30px rgba(245,158,11,0.25)'
-			},
-			backdropBlur: {
-				glass: '24px'
 			}
 		}
 	},

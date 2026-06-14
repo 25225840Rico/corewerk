@@ -1,78 +1,119 @@
 <script lang="ts">
-	import { plans } from '$lib/data';
 	import Icon from '$lib/Icon.svelte';
 	import { reveal } from '$lib/reveal';
+	import { plans, WA_LINK } from '$lib/data';
+
+	// Toggle: distingue proyectos (pago único) de servicios recurrentes (retainer).
+	let billing = $state<'unico' | 'mensual'>('unico');
+
+	const note = $derived(
+		billing === 'unico'
+			? 'Proyectos con precio cerrado y pago único o en cuotas.'
+			: 'Los servicios de Marketing Digital y soporte continuo se cobran como retainer mensual desde USD 400/mes.'
+	);
 </script>
 
-<section id="precios" class="py-20 lg:py-28">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<!-- Header -->
-		<div class="text-center mb-14" use:reveal>
-			<p class="eyebrow">Inversión</p>
-			<h2 class="text-3xl md:text-4xl font-bold text-ink mb-4">Planes y precios</h2>
-			<p class="text-muted text-lg max-w-2xl mx-auto">
-				Precios en UF, transparentes y sin sorpresas. Elige el plan que se ajusta a tu proyecto.
+<section id="precios" class="bg-surface-200 py-20 lg:py-28">
+	<div class="container-w">
+		<div class="reveal mx-auto max-w-2xl text-center" use:reveal>
+			<span class="eyebrow">Precios</span>
+			<h2 class="mt-3 text-3xl font-extrabold tracking-tight text-primary sm:text-4xl">
+				Planes claros, sin letra chica
+			</h2>
+			<p class="mt-4 text-lg text-muted">
+				Tres formas de empezar su transformación digital. Aplica a todas las unidades.
 			</p>
 		</div>
 
-		<!-- Plans grid -->
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-			{#each plans as plan}
+		<!-- Toggle -->
+		<div class="reveal mt-8 flex flex-col items-center gap-3" use:reveal>
+			<div class="inline-flex rounded-xl border border-line bg-white p-1">
+				<button
+					onclick={() => (billing = 'unico')}
+					class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors duration-120 {billing ===
+					'unico'
+						? 'bg-primary text-white'
+						: 'text-muted hover:text-primary'}"
+				>
+					Proyecto único
+				</button>
+				<button
+					onclick={() => (billing = 'mensual')}
+					class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors duration-120 {billing ===
+					'mensual'
+						? 'bg-primary text-white'
+						: 'text-muted hover:text-primary'}"
+				>
+					Retainer mensual
+				</button>
+			</div>
+			<p class="text-sm text-muted">{note}</p>
+		</div>
+
+		<!-- Planes -->
+		<div class="mt-12 grid items-start gap-6 lg:grid-cols-3">
+			{#each plans as plan, i}
 				<div
-					class="relative glass rounded-3xl p-8 flex flex-col h-full
-						{plan.featured
-						? 'shadow-glow ring-1 ring-accent/40 lg:scale-105'
+					class="reveal card relative flex h-full flex-col p-7 {plan.featured
+						? 'border-accent shadow-card-lg ring-1 ring-accent'
 						: ''}"
+					style="transition-delay: {i * 70}ms;"
 					use:reveal
 				>
-					<!-- Featured badge -->
-					{#if plan.featured && plan.badge}
-						<div class="absolute -top-4 left-1/2 -translate-x-1/2">
-							<span
-								class="bg-accent text-primary text-xs font-bold rounded-full px-3 py-1 whitespace-nowrap"
-							>
-								{plan.badge}
-							</span>
-						</div>
+					{#if plan.badge}
+						<span
+							class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-1 text-xs font-bold text-primary"
+						>
+							{plan.badge}
+						</span>
 					{/if}
 
-					<!-- Plan name & price -->
-					<div class="mb-6 {plan.featured ? 'mt-2' : ''}">
-						<h3 class="font-bold text-ink text-xl mb-2">{plan.name}</h3>
-						<p class="text-4xl font-extrabold text-ink">{plan.price}</p>
-					</div>
+					<h3 class="text-lg font-extrabold text-primary">{plan.name}</h3>
+					<p class="mt-1 text-sm text-muted">{plan.headline}</p>
 
-					<!-- Features list -->
-					<ul class="flex flex-col gap-3 flex-1 mb-6" role="list">
-						{#each plan.features as feature}
-							<li class="flex items-start gap-3">
-								<Icon name="check" class="w-5 h-5 text-accent shrink-0 mt-0.5" />
-								<span class="text-ink/80 text-sm leading-snug">{feature}</span>
+					<div class="mt-5 flex items-baseline gap-1.5">
+						<span class="text-xs font-medium text-faint">Desde</span>
+						<span class="text-3xl font-extrabold text-primary">{plan.price}</span>
+					</div>
+					<span class="mt-1 text-xs text-faint">{plan.priceNote}</span>
+
+					<ul class="mt-6 flex-1 space-y-3">
+						{#each plan.features as f}
+							<li class="flex gap-2.5 text-sm text-ink">
+								<Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-success" />
+								<span>{f}</span>
 							</li>
 						{/each}
 					</ul>
 
-					<!-- Ideal para -->
-					<p class="text-faint text-sm mt-auto mb-5">
-						<span class="font-medium">Ideal para:</span>
-						{plan.ideal}
+					<p class="mt-6 text-xs text-faint">
+						<span class="font-semibold text-muted">Ideal para:</span> {plan.ideal}
 					</p>
 
-					<!-- CTA -->
 					<a
-						href="#contacto"
-						class="{plan.featured ? 'btn-accent' : 'btn-glass'} w-full block text-center"
+						href={WA_LINK}
+						target="_blank"
+						rel="noopener"
+						class="mt-5 {plan.featured ? 'btn-accent' : 'btn-outline'} w-full"
 					>
-						{plan.featured ? 'Contratar' : 'Empezar'}
+						{plan.cta}
 					</a>
 				</div>
 			{/each}
 		</div>
 
-		<!-- Footer note -->
-		<p class="text-muted text-sm text-center mt-10 max-w-3xl mx-auto leading-relaxed" use:reveal>
-			Todos los precios en UF. Pago en etapas: 50% inicio / 50% entrega. Factura disponible.
-			Mejoras de sitios existentes desde UF 3 — cotización personalizada.
-		</p>
+		<div class="reveal mt-10 text-center" use:reveal>
+			<p class="text-muted">
+				¿No sabe qué plan necesita?
+				<a
+					href={WA_LINK}
+					target="_blank"
+					rel="noopener"
+					class="font-semibold text-accent2 hover:underline"
+				>
+					Diagnóstico gratuito en 24 horas →
+				</a>
+			</p>
+		</div>
 	</div>
 </section>

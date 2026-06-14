@@ -10,7 +10,7 @@
 		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (reduce) return;
 
-		let lenis: { raf: (t: number) => void; destroy: () => void; scrollTo: (t: unknown, o?: unknown) => void } | null = null;
+		let lenis: { raf: (t: number) => void; destroy: () => void; scrollTo: (t: string | number | HTMLElement, o?: Record<string, unknown>) => void } | null = null;
 		let rafId = 0;
 		let cleanupAnchors: (() => void) | undefined;
 
@@ -33,7 +33,7 @@
 					const el = document.querySelector(href);
 					if (el) {
 						e.preventDefault();
-						lenis?.scrollTo(el, { offset: -90 });
+						lenis?.scrollTo(el as HTMLElement, { offset: -90 });
 					}
 				}
 			};

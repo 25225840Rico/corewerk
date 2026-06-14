@@ -1,19 +1,17 @@
 // Configuración global del sitio (una sola fuente de verdad para SEO).
 export const SITE = {
-	name: 'Konrad',
-	url: 'https://konrad.cl',
-	telephone: '+56912345678',
-	email: 'hola@konrad.cl',
+	name: 'CoreWerk',
+	url: 'https://corewerk.cl',
+	// ⚠️ PLACEHOLDER — reemplazar por el número real antes de producción.
+	telephone: '+56900000000',
+	whatsapp: '56900000000',
+	email: 'contacto@corewerk.cl',
 	city: 'Antofagasta',
 	country: 'CL',
-	// Atendemos todo Chile (posicionamiento nacional, ver Agente 6)
+	region: 'Norte de Chile',
 	areaServed: 'Chile'
 };
 
-// ⚠️ DATOS A REEMPLAZAR ANTES DE PRODUCCIÓN (actualmente ilustrativos):
-// teléfono real, email real, y el aggregateRating del JSON-LD (reviews reales).
-export const RATING_PLACEHOLDER = {
-	ratingValue: '4.9',
-	reviewCount: '23',
-	isPlaceholder: true
-};
+// Mensaje pre-cargado para los enlaces de WhatsApp.
+export const WA_TEXT = encodeURIComponent('Hola CoreWerk, quiero información sobre sus servicios');
+export const WA_LINK = `https://wa.me/${SITE.whatsapp}?text=${WA_TEXT}`;

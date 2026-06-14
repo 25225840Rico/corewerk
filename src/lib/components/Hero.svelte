@@ -1,143 +1,110 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import Icon from '$lib/Icon.svelte';
 	import { reveal } from '$lib/reveal';
-	import { magnetic, splitChars } from '$lib/fx';
-	import { heroPills } from '$lib/data';
+	import { heroPills, WA_LINK } from '$lib/data';
 
-	let heroText: HTMLElement;
-	let heroSection: HTMLElement;
-	let heroBg: HTMLElement;
+	const stats = [
+		{ value: '7 días', label: 'Entrega promedio' },
+		{ value: '5', label: 'Unidades de negocio' },
+		{ value: '24h', label: 'Primera respuesta' }
+	];
 
-	onMount(async () => {
-		// ── Animación headline letra por letra con GSAP ──────────────────
-		if (typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-			try {
-				const { gsap } = await import('gsap');
-				// splitChars ya habrá dividido el h1 en spans vía use:splitChars
-				if (heroText) {
-					const spans = heroText.querySelectorAll('span');
-					if (spans.length > 0) {
-						gsap.fromTo(
-							spans,
-							{ y: -40, opacity: 0 },
-							{
-								y: 0,
-								opacity: 1,
-								stagger: 0.03,
-								duration: 0.7,
-								ease: 'power4.out',
-								clearProps: 'transform'
-							}
-						);
-					}
-				}
-			} catch {
-				// GSAP falla: el texto queda visible (sin animación)
-				if (heroText) {
-					const spans = heroText.querySelectorAll('span');
-					spans.forEach((s) => {
-						(s as HTMLElement).style.opacity = '1';
-					});
-				}
-			}
-		}
-
-		// ── Parallax sutil en scroll (60fps, solo transform) ─────────────
-		if (typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !window.matchMedia('(pointer: coarse)').matches) {
-			let ticking = false;
-
-			function onScroll() {
-				if (!ticking) {
-					requestAnimationFrame(() => {
-						const scrollY = window.scrollY;
-						if (heroSection) {
-							// Bloque de texto: mueve a 0.6x del scroll
-							const content = heroSection.querySelector<HTMLElement>('.hero-content');
-							if (content) {
-								content.style.transform = `translateY(${scrollY * 0.18}px)`;
-							}
-						}
-						if (heroBg) {
-							// Elemento de fondo: mueve a 0.3x del scroll
-							heroBg.style.transform = `translateY(${scrollY * 0.08}px)`;
-						}
-						ticking = false;
-					});
-					ticking = true;
-				}
-			}
-
-			window.addEventListener('scroll', onScroll, { passive: true });
-
-			return () => {
-				window.removeEventListener('scroll', onScroll);
-			};
-		}
-	});
+	const deco = ['globe', 'automation', 'cpu', 'dashboard'];
 </script>
 
-<section
-	bind:this={heroSection}
-	id="inicio"
-	class="relative flex min-h-screen items-center overflow-hidden pb-16 pt-28"
->
-	<!-- Dot pattern sutil sobre la escena -->
+<section id="inicio" class="relative overflow-hidden bg-primary text-white">
+	<!-- Patrón de puntos + glows -->
+	<div class="dot-pattern absolute inset-0 opacity-60" aria-hidden="true"></div>
 	<div
-		bind:this={heroBg}
-		class="dot-pattern pointer-events-none absolute inset-0 opacity-20"
-		style="will-change: transform;"
+		class="pointer-events-none absolute inset-0"
+		style="background:
+			radial-gradient(40rem 30rem at 85% -10%, rgba(245,158,11,0.18), transparent 60%),
+			radial-gradient(40rem 30rem at 0% 110%, rgba(14,165,233,0.16), transparent 60%);"
 		aria-hidden="true"
 	></div>
 
-	<div class="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-		<!-- Main content -->
-		<div class="hero-content max-w-3xl" use:reveal style="will-change: transform;">
-			<!-- Headline animado letra por letra -->
+	<div class="container-w relative grid items-center gap-12 py-28 lg:grid-cols-12 lg:py-36">
+		<!-- Columna texto -->
+		<div class="lg:col-span-7">
+			<span class="reveal chip border-accent/40 bg-accent/10 text-accent" use:reveal>
+				<Icon name="map" class="h-3.5 w-3.5" /> Antofagasta · Norte de Chile
+			</span>
+
 			<h1
-				bind:this={heroText}
-				use:splitChars
-				class="mb-6 text-[52px] font-extrabold leading-[1.05] tracking-[-0.04em] sm:text-7xl lg:text-[96px]"
+				class="reveal mt-5 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl"
+				use:reveal
 			>
-				<span class="text-gradient">Creamos el sitio web</span><br />
-				<span class="text-gradient">que </span><span class="text-accent">tu negocio necesita</span>
+				Tecnología que <span class="text-accent">trabaja en faena</span>
 			</h1>
 
-			<!-- Subheadline: 18px, weight 400, line-height 1.7, text-muted -->
-			<p class="mb-8 max-w-2xl text-lg font-normal leading-[1.7] text-muted">
-				Desde tiendas online hasta plataformas institucionales. Diseñamos, desarrollamos y mejoramos
-				sitios web para cualquier tipo de proyecto — rápidos, modernos y hechos para convertir.
+			<p class="reveal mt-6 max-w-xl text-lg text-white/70" use:reveal>
+				Automatización, sitios web, IA y sistemas digitales para empresas de minería, transporte y
+				servicios industriales.
 			</p>
 
-			<!-- CTAs: máx 2 (Hick's Law). CTA primario ámbar es el ÚNICO ámbar de relleno. -->
-			<div class="mb-6 flex flex-wrap gap-4">
-				<!-- CTA primario: ámbar + magnetic -->
-				<a href="#contacto" class="btn-accent" use:magnetic={{ strength: 8 }}>
-					Quiero una web nueva
-				</a>
-				<!-- CTA secundario: vidrio (Von Restorff: no compite con el ámbar) -->
-				<a href="#diagnostico" class="btn-glass">
-					Mejorar mi web actual
+			<div class="reveal mt-8 flex flex-wrap gap-3" use:reveal>
+				<a href="#servicios" class="btn-accent">Ver servicios →</a>
+				<a href={WA_LINK} target="_blank" rel="noopener" class="btn-ghost-light">
+					<Icon name="zap" class="h-4 w-4" /> WhatsApp directo
 				</a>
 			</div>
 
-			<!-- Indicadores de credibilidad -->
-			<p class="text-sm text-faint">
-				9 tipos de proyectos · +30 sitios entregados · Respuesta en 24 h
-			</p>
+			<!-- Stats -->
+			<div class="reveal mt-12 grid max-w-lg grid-cols-3 gap-6" use:reveal>
+				{#each stats as s}
+					<div>
+						<div class="text-2xl font-extrabold text-white sm:text-3xl">{s.value}</div>
+						<div class="mt-1 text-xs text-white/55">{s.label}</div>
+					</div>
+				{/each}
+			</div>
 		</div>
 
-		<!-- Pills row -->
-		<div class="mt-12" use:reveal>
-			<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 sm:flex-wrap">
-				{#each heroPills as pill}
-					<span
-						class="glass whitespace-nowrap rounded-full px-4 py-2 text-sm text-ink/90 transition-colors duration-120 hover:text-ink"
-						style="transition-timing-function: var(--ease-spring);"
+		<!-- Columna decorativa: grid de íconos -->
+		<div class="reveal hidden lg:col-span-5 lg:block" use:reveal>
+			<div class="grid grid-cols-2 gap-4">
+				{#each deco as d, i}
+					<div
+						class="float-tile flex aspect-square items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur"
+						style="animation-delay: {i * 0.6}s;"
 					>
-						{pill}
-					</span>
+						<Icon name={d} class="h-12 w-12 text-accent2" />
+					</div>
 				{/each}
 			</div>
 		</div>
 	</div>
+
+	<!-- Pills de industrias -->
+	<div class="container-w relative pb-12">
+		<div class="no-scrollbar flex gap-2.5 overflow-x-auto pb-1">
+			{#each heroPills as pill}
+				<span
+					class="whitespace-nowrap rounded-full border border-white/15 bg-white/[0.04] px-4 py-1.5 text-sm text-white/75"
+				>
+					{pill}
+				</span>
+			{/each}
+		</div>
+	</div>
 </section>
+
+<style>
+	.float-tile {
+		animation: float 6s ease-in-out infinite;
+	}
+	@keyframes float {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-8px);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.float-tile {
+			animation: none;
+		}
+	}
+</style>
