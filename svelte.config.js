@@ -14,6 +14,10 @@ const config = {
 			precompress: false,
 			strict: true
 		}),
+		paths: {
+			// Base path para GitHub Pages (repo project). En Ferozo/raíz queda vacío.
+			base: process.env.BASE_PATH ?? ''
+		},
 		prerender: {
 			// Los links del Navbar (#inicio, #segmentos, etc.) son anclas relativas
 			// pensadas para la home. En subpáginas no existen esos ids: se ignora.
