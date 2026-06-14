@@ -6,9 +6,10 @@ export default {
 			colors: {
 				// --- Base oscura (tema premium) ---
 				primary: '#0F172A', // navy (acentos / superficies sólidas)
-				abyss: '#070B16', // fondo más profundo de la escena
-				accent: '#F59E0B', // ámbar (CTAs, foco)
+				abyss: '#080B14', // fondo más profundo de la escena (hero)
+				accent: '#F59E0B', // ámbar (CTAs, foco) — acento ÚNICO (Von Restorff)
 				'accent-soft': '#FBBF24',
+				cyber: '#00FFE0', // cian eléctrico — SOLO detalles técnicos, máx 3 usos/página
 				surface: '#0B1120', // fondo base de página (antes era claro)
 				// Texto sobre oscuro
 				ink: '#F1F5F9', // texto principal (slate-100)

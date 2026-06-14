@@ -13,7 +13,14 @@ const config = {
 			fallback: '404.html',
 			precompress: false,
 			strict: true
-		})
+		}),
+		prerender: {
+			// Los links del Navbar (#inicio, #segmentos, etc.) son anclas relativas
+			// pensadas para la home. En subpáginas no existen esos ids: se ignora.
+			handleMissingId: 'warn',
+			// /blog/[slug] no genera entradas mientras blogPosts esté vacío: se ignora.
+			handleUnseenRoutes: 'warn'
+		}
 	}
 };
 

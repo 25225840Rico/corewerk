@@ -183,6 +183,21 @@
 	}
 }
 
+/* --- Lenis smooth scroll (desactiva el scroll-behavior nativo cuando está activo) --- */
+html.lenis,
+html.lenis body {
+	height: auto;
+}
+.lenis.lenis-smooth {
+	scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+	overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+	overflow: hidden;
+}
+
 @layer utilities {
 	/* Scroll horizontal sin barra (pills del hero) */
 	.no-scrollbar {
@@ -237,5 +252,63 @@
 		.glass-card:hover {
 			transform: none;
 		}
+	}
+}
+
+/* =====================================================================
+   CURSOR FX — Cursor circular ámbar custom (desktop, pointer:fine)
+   ===================================================================== */
+
+/* Ocultar cursor nativo sólo cuando CursorFX está activo */
+body.cursor-fx-active,
+body.cursor-fx-active * {
+	cursor: none !important;
+}
+
+.cursor-fx {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #f59e0b;
+	pointer-events: none;
+	z-index: 9999;
+	will-change: transform;
+	transition:
+		width 0.2s var(--ease-spring),
+		height 0.2s var(--ease-spring),
+		opacity 0.2s ease,
+		filter 0.2s ease;
+	mix-blend-mode: screen;
+}
+
+.cursor-fx.cursor-fx-expanded {
+	width: 40px;
+	height: 40px;
+	opacity: 0.55;
+	filter: blur(3px);
+}
+
+/* En pantallas táctiles / pointer:coarse: ocultar el cursor FX */
+@media (pointer: coarse) {
+	.cursor-fx {
+		display: none !important;
+	}
+	body.cursor-fx-active,
+	body.cursor-fx-active * {
+		cursor: auto !important;
+	}
+}
+
+/* Respetar prefers-reduced-motion: ocultar cursor FX si reduce */
+@media (prefers-reduced-motion: reduce) {
+	.cursor-fx {
+		display: none !important;
+	}
+	body.cursor-fx-active,
+	body.cursor-fx-active * {
+		cursor: auto !important;
 	}
 }

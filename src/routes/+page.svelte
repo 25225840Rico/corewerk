@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CursorFX from '$lib/components/CursorFX.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Hero from '$lib/components/Hero.svelte';
 	import Segments from '$lib/components/Segments.svelte';
@@ -17,6 +18,7 @@
 	<title>Konrad · Creamos y mejoramos sitios web para cualquier negocio</title>
 </svelte:head>
 
+<CursorFX />
 <Navbar />
 
 <main>

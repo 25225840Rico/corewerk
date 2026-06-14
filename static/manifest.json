@@ -1,0 +1,14 @@
+{
+	"name": "Konrad — Agencia Web Chile",
+	"short_name": "Konrad",
+	"description": "Creamos y mejoramos sitios web para empresas de todos los sectores en Chile",
+	"start_url": "/",
+	"display": "standalone",
+	"theme_color": "#080B14",
+	"background_color": "#080B14",
+	"lang": "es-CL",
+	"icons": [
+		{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+		{ "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+	]
+}

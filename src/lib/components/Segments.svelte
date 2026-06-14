@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '$lib/Icon.svelte';
 	import { reveal } from '$lib/reveal';
+	import { tilt } from '$lib/fx';
 	import { segments } from '$lib/data';
 </script>
 
@@ -25,6 +26,7 @@
 				<article
 					class="group glass glass-card rounded-2xl p-6"
 					use:reveal
+					use:tilt={{ max: 8 }}
 				>
 					<!-- Ícono -->
 					<div class="inline-flex items-center justify-center glass rounded-xl p-3 mb-4">
