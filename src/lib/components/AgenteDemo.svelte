@@ -3,7 +3,10 @@
 	import { tick } from 'svelte';
 	import Icon from '$lib/Icon.svelte';
 	import { agentChips, agentSystemPrompt, waLink } from '$lib/data';
-	import { PUBLIC_ANTHROPIC_KEY } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
+	// $env/dynamic/public no rompe el build si la variable no está definida
+	// (en CI/GitHub Pages no existe .env). Si falta, el chat muestra un aviso.
+	const PUBLIC_ANTHROPIC_KEY = env.PUBLIC_ANTHROPIC_KEY;
 
 	// --- Types ---
 	type Message = { role: 'user' | 'assistant'; content: string };
