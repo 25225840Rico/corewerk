@@ -13,7 +13,7 @@ export default {
 				accentAI: '#10B981',
 				surface: '#F8FAFC',
 				ink: '#E2E8F0',
-				muted: '#64748B',
+				muted: '#94A3B8',
 				glass: 'rgba(255,255,255,0.06)',
 				glassBorder: 'rgba(255,255,255,0.12)',
 				aiGlow: 'rgba(16,185,129,0.15)'

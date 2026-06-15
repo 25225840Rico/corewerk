@@ -1,0 +1,53 @@
+{
+  "project": "CoreWerk",
+  "repo": "25225840Rico/corewerk",
+  "branch": "main",
+  "localPath": "C:\\Users\\aronr\\OneDrive\\Escritorio\\konrad",
+  "liveUrl": "https://25225840rico.github.io/corewerk/",
+  "phase": "Subpáginas internas completadas y desplegadas",
+  "status": "code-complete; build limpio (exit 0, 36 páginas); push a main hecho (deploy GitHub Pages disparado)",
+  "last_session": "2026-06-14T00:00:00-04:00",
+  "updated": "2026-06-14",
+  "designSystem": "glass/dark + acento ámbar #F59E0B y verde-IA #10B981 (definitivo)",
+  "next_step": "Verificar que la Action de deploy termine OK y que la home + subpáginas (/sitios/, /inteligencia-artificial/, /servicios/) respondan HTTP 200",
+  "open_tasks": [
+    "Verificar deploy GitHub Pages (Action verde + HTTP 200 en subpáginas)",
+    "Considerar volver svelte.config handleHttpError de 'warn' a 'fail' (ya no hay 404)",
+    "Reemplazar placeholders con datos reales cuando el usuario los entregue"
+  ],
+  "blockers": [
+    "WhatsApp real (placeholder +56 9 0000 0000 en src/lib/seo/site.ts y data.ts contact)",
+    "PUBLIC_ANTHROPIC_KEY real para el chat en prod (key PUBLIC queda expuesta en bundle)",
+    "Confirmar email real: hola@corewerk.cl (data.ts) vs contacto@corewerk.cl (site.ts)"
+  ],
+  "build": {
+    "command": "npm run build",
+    "status": "exit 0, sin 404, 36 index.html",
+    "check": "npm run check: 0 ERRORS, 1 WARNING ambiental (tsconfig type node)",
+    "tsErrors": 0
+  },
+  "deploy": {
+    "method": "GitHub Actions Pages",
+    "workflow": ".github/workflows/deploy.yml",
+    "basePath": "/corewerk",
+    "trigger": "push a main"
+  },
+  "interiorComponents": [
+    "HeroInterior", "InteriorSection", "FeatureGrid", "CheckList",
+    "ProcesoInterior", "PreciosInterior", "FaqInterior", "CTAInterior"
+  ],
+  "routesCreated": {
+    "sitios": ["(index)", "landing-page", "corporativo", "ecommerce", "portafolio", "blog", "saas", "directorio", "comunidad", "institucional"],
+    "inteligencia-artificial": ["(hub)", "agentes-a-medida", "chatbots", "automatizacion", "asistentes-empresariales", "consultoria-ia"],
+    "servicios": ["(index)", "diseno-web", "desarrollo-web", "ui-ux", "seo", "google-ads", "marketing-b2b", "email-marketing", "mantencion-web"],
+    "servicios-basicos": ["(index)", "logo-branding", "email-corporativo", "hosting-dominio", "mantencion-mensual", "actualizacion-contenido"],
+    "sueltas": ["portafolio", "nosotros", "contacto", "blog"]
+  },
+  "gotchas": [
+    ".env PUBLIC_ANTHROPIC_KEY en .gitignore (no versionado)",
+    "AgenteDemo usa $env/dynamic/public (static rompe build CI)",
+    "Git Bash mangla BASE_PATH=/corewerk en Windows; usar MSYS_NO_PATHCONV=1 local",
+    "componentes legacy sin uso: Industrias, Casos, ComoTrabajamos, CashflowRapido, Pricing",
+    "border-radius 0 en todo el sistema glass; excepción: burbujas de chat"
+  ]
+}

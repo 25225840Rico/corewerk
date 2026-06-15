@@ -1,0 +1,104 @@
+HANDOFF — CoreWerk (proyecto "konrad" / repo "corewerk") — 2026-06-14
+
+OBJETIVO GLOBAL
+Transformar el proyecto SvelteKit "Konrad" en "CoreWerk": estudio de diseño,
+desarrollo web e inteligencia artificial de Antofagasta, Chile. Sistema visual
+DEFINITIVO = glass/dark con acento IA verde (prompt "PARTE 1..10" del usuario,
+que reemplaza todos los anteriores). Sitio multipágina + home extenso + ~40
+subpáginas SEO + demo IA en vivo (Claude API).
+
+STACK (no cambia): SvelteKit + Svelte 5 runes + TypeScript + Tailwind v3 +
+adapter-static. GSAP instalado. Sin backend ni DB. Contenido centralizado en data.ts.
+
+UBICACIÓN Y DEPLOY
+- Local: C:\Users\aronr\OneDrive\Escritorio\konrad
+- Repo: github.com/25225840Rico/corewerk (renombrado desde "konrad"). Rama: main.
+- gh CLI autenticado como 25225840Rico.
+- Deploy: GitHub Pages por Actions (.github/workflows/deploy.yml). El workflow
+  inyecta BASE_PATH=/corewerk y hace npm ci + npm run build + deploy-pages.
+- Push a main dispara deploy automático.
+- ENLACE EN VIVO: https://25225840rico.github.io/corewerk/  (HTTP 200, home OK)
+
+ESTADO ACTUAL (qué está hecho y desplegado)
+HOME COMPLETO en sistema glass/dark, desplegado y funcionando. Incluye:
+- tailwind.config.js: paleta completa (primary #0A1628, secondary, accent #F59E0B
+  ámbar, accent2 cyan, accent3 morado, accentAI #10B981 verde-IA, ink, muted, glass…)
+  + keyframes/animations (ticker, float, city-in/out).
+- src/app.css: sistema glass completo (.glass-card, .glass-card-ai, .glass-nav,
+  .btn-accent/.btn-ghost/.btn-ai, .eyebrow, .container-w, .bg-corewerk, .bg-ai-section,
+  .ai-glow, .reveal, .wa-pulse, .badge-live, .animate-ticker, .dot-pattern).
+- src/lib/Icon.svelte: +20 íconos (robot, brain, chat, cart, code, palette, search,
+  wrench, server, at, rocket, users, file, shield, layers, star, phone, whatsapp…).
+- src/lib/data.ts: REESCRITO, 0 errores TS. Exporta (shapes en CHECKPOINT.md):
+  ciudadesChile, heroPhrases, siteTypes(9), aiAgents(6), serviciosBasicos(5), units(5),
+  plans(3), testimonials(3), faqs(10), metrics(4), portfolioItems, processSteps,
+  tickerItems, agentSystemPrompt, agentChips, contact, projectTypes, waLink, WA_LINK.
+  Legacy aún presentes: industries, cases, cashflowCards/cashflowBannerMsg.
+- Componentes NUEVOS (src/lib/components/): CiudadRotante, BannerTicker, TiposWeb,
+  EntradaRapida, SeccionIA, AgentesDetalle, Proceso, Portafolio, Testimonios, Precios,
+  ServiciosBasicos, CTAFinal.
+- Componentes REDISEÑADOS: Navbar (6 mega menús: Sitios, IA, Servicios, Servicios
+  Básicos, Portafolio, Nosotros + CTA Cotizar), Hero (CiudadRotante + 3 cards GSAP
+  float), AgenteDemo (Claude API, claude-haiku-4-5-20251001, $env/dynamic/public),
+  LoadingScreen (GSAP timeline), Servicios (tabs), Metricas (count-up), FAQ, Contacto,
+  Footer, WhatsAppButton.
+- src/routes/+page.svelte: home con 17 secciones en orden del spec (Hero, BannerTicker,
+  TiposWeb, EntradaRapida, SeccionIA, AgentesDetalle, Servicios, AgenteDemo, Metricas,
+  Proceso, Portafolio, Testimonios, Precios, ServiciosBasicos, FAQ, CTAFinal, Contacto)
+  + <svelte:head> con SEO + JSON-LD (Organization + FAQPage).
+- src/routes/+layout.svelte: Navbar + WhatsAppButton + LoadingScreen + Footer globales.
+- src/routes/+layout.ts: prerender=true, trailingSlash='always'.
+- svelte.config.js: prerender.handleHttpError='warn' (evita que el build falle por los
+  enlaces a subpáginas que aún no existen).
+
+ÚLTIMO PASO COMPLETADO
+Push a main (commit 79d5274) del rediseño glass/dark + home + layout. Deploy Actions
+exitoso. Sitio en vivo responde HTTP 200. Home se ve completo.
+
+LO QUE FALTA (PRÓXIMO PASO EXACTO)
+Crear las ~40 SUBPÁGINAS (Parte 3 y Parte 7 del prompt). HOY los links de Navbar/Footer
+a estas rutas dan 404 (el build pasa solo por handleHttpError='warn'):
+  /sitios/  + 9: landing-page, corporativo, ecommerce, portafolio, blog, saas,
+            directorio, comunidad, institucional
+  /inteligencia-artificial/ (HUB EXTENSO, Parte 7) + 5: agentes-a-medida, chatbots,
+            automatizacion, asistentes-empresariales, consultoria-ia
+  /servicios/ + 5: diseno-web, desarrollo-web, marketing-digital, seo, mantencion-web
+  /servicios-basicos/ + 5: logo-branding, email-corporativo, hosting-dominio,
+            mantencion-mensual, actualizacion-contenido
+  /portafolio/, /nosotros/, /blog/ (estructura vacía lista), /contacto/
+
+PLANTILLA por subpágina (Parte 7): <svelte:head> (title+description únicos 150-160
+chars con ciudad+servicio, canonical, JSON-LD WebPage+Service o FAQPage) → HeroInterior
+(breadcrumb + H1 + subtítulo + precio + CTAs) → QueEs (400+ palabras) → QueIncluye
+(grid glass-cards) → ParaQuien (4-6 cards) → Proceso (4 pasos) → Precios (3 planes) →
+FAQ (4-6) → CTA (WhatsApp + email). El hub /inteligencia-artificial/ es más extenso
+(6 casos uso, tabla comparativa 5 agentes, timeline 5 pasos, stats, 8 FAQ IA).
+
+ESTRATEGIA RECOMENDADA (dividir en agentes por dificultad, como venimos haciendo)
+1) Primero crear COMPONENTES INTERIOR reutilizables (HeroInterior, QueEsSection,
+   QueIncluyeSection, ParaQuienSection, ProcesoSection, PreciosSection, FAQSection,
+   CTASection) en src/lib/components/interior/ — usar clases glass de app.css.
+2) Luego DIVIDIR las páginas entre agentes builder (haiku para las repetitivas por
+   pillar; sonnet para el hub IA extenso). Cada agente = un pillar, archivos disjuntos.
+   Datos desde data.ts (siteTypes, aiAgents, serviciosBasicos, units, plans, faqs).
+3) Enlaces internos SIEMPRE con trailing slash (trailingSlash='always').
+4) Tras crearlas: `npm run build` (debe quedar sin 404), considerar volver
+   handleHttpError a 'fail', commit + push, verificar enlace.
+
+CÓMO RETOMAR
+- Leer este HANDOFF + progress/CHECKPOINT.md.
+- `npm run build` para confirmar estado base (404 solo de rutas no creadas).
+- Ejecutar el PRÓXIMO PASO (subpáginas) por olas de agentes.
+- Verificar build, push a main, revisar https://25225840rico.github.io/corewerk/
+
+NOTAS / GOTCHAS
+- .env (PUBLIC_ANTHROPIC_KEY) en .gitignore, NO se versiona. AgenteDemo usa
+  $env/dynamic/public (si usas $env/static/public ROMPE el build en CI). Sin key, el
+  chat muestra aviso amable con link a WhatsApp.
+- Git Bash en Windows mangla rutas tipo /corewerk al pasar BASE_PATH; usar
+  MSYS_NO_PATHCONV=1 si se prueba build con BASE_PATH localmente. En CI (Ubuntu) no pasa.
+- Warning CI "Node 20 deprecated": informativo, no bloquea.
+- Componentes legacy sin uso (Industrias, Casos, ComoTrabajamos, CashflowRapido,
+  Pricing) siguen en el repo; no se importan en home; borrar cuando convenga.
+- Restricciones: solo Svelte 5 runes; solo GSAP como lib nueva; adapter-static intacto;
+  border-radius 0 en glass-cards; dark mode; sin imágenes externas salvo placehold.co.

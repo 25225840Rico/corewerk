@@ -773,17 +773,18 @@ export const metrics: Metric[] = [
 export interface PortfolioItem {
 	title: string;
 	category: string;
+	icon: string;
 	live?: boolean;
 }
 
 export const portfolioItems: PortfolioItem[] = [
-	{ title: 'Demo IA Interactiva', category: 'Agente IA', live: true },
-	{ title: 'Sitio Corporativo — Empresa Minera', category: 'Presencia Digital' },
-	{ title: 'E-commerce — Tienda Retail', category: 'Presencia Digital' },
-	{ title: 'Agente de Ventas — Inmobiliaria', category: 'Inteligencia Artificial' },
-	{ title: 'Automatización de Cotizaciones', category: 'Automatización' },
-	{ title: 'Landing Page — Clínica Dental', category: 'Presencia Digital' },
-	{ title: 'Plataforma SaaS — Gestión de Proyectos', category: 'Desarrollo Web' }
+	{ title: 'Demo IA Interactiva', category: 'Agente IA', icon: 'brain', live: true },
+	{ title: 'Sitio Corporativo — Empresa Minera', category: 'Presencia Digital', icon: 'building' },
+	{ title: 'E-commerce — Tienda Retail', category: 'Presencia Digital', icon: 'cart' },
+	{ title: 'Agente de Ventas — Inmobiliaria', category: 'Inteligencia Artificial', icon: 'rocket' },
+	{ title: 'Automatización de Cotizaciones', category: 'Automatización', icon: 'automation' },
+	{ title: 'Landing Page — Clínica Dental', category: 'Presencia Digital', icon: 'globe' },
+	{ title: 'Plataforma SaaS — Gestión de Proyectos', category: 'Desarrollo Web', icon: 'dashboard' }
 ];
 
 // ---------------------------------------------------------------------
